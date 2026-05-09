@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>La Miette — Artisan Bakery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --warm-white: #fdfaf5;
+      --cream: #f5ede0;
+      --parchment: #ede0cc;
+      --caramel: #c8853a;
+      --brown: #7c4a1e;
+      --dark-brown: #3b2010;
+      --soft-gold: #e8b86d;
+      --blush: #f2ddd0;
+      --sage: #a8b89a;
+      --text: #2d1a0e;
+      --text-light: #8a6650;
+      --white: #ffffff;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--warm-white);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--cream); }
+    ::-webkit-scrollbar-thumb { background: var(--caramel); border-radius: 3px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5rem;
+      background: rgba(253,250,245,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(200,133,58,0.15);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 30px rgba(60,30,10,0.08); }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      font-style: italic;
+      color: var(--brown);
+      letter-spacing: 0.04em;
+    }
+    .nav-logo span { color: var(--caramel); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--caramel); }
+    .nav-order {
+      background: var(--caramel);
+      color: #fff !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2px;
+      font-weight: 500 !important;
+    }
+    .nav-order:hover { background: var(--brown) !important; color: #fff !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem 4rem 6rem 8rem;
+      background: var(--warm-white);
+      position: relative;
+    }
+    .hero-left::after {
+      content: '';
+      position: absolute; right: -1px; top: 10%; bottom: 10%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--parchment), transparent);
+    }
+    .hero-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--caramel);
+      margin-bottom: 1.8rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .hero-tag::before {
+      content: '';
+      display: block; width: 36px; height: 1px;
+      background: var(--caramel);
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 5vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--dark-brown);
+      margin-bottom: 1.6rem;
+    }
+    .hero-title em { font-style: italic; color: var(--caramel); }
+    .hero-desc {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-light);
+      line-height: 1.85;
+      max-width: 40ch;
+      margin-bottom: 3rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--caramel);
+      color: #fff;
+      padding: 0.95rem 2.4rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.3s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--brown); transform: translateY(-2px); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--brown);
+      padding: 0.95rem 2.4rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      border: 1.5px solid var(--parchment);
+      transition: all 0.3s;
+      display: inline-block;
+    }
+    .btn-secondary:hover { border-color: var(--caramel); color: var(--caramel); }
+    .hero-stats {
+      display: flex; gap: 3rem; margin-top: 3.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--parchment);
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--brown);
+    }
+    .stat-label { font-size: 0.72rem; color: var(--text-light); letter-spacing: 0.08em; margin-top: 0.2rem; }
+
+    .hero-right {
+      position: relative;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+    }
+    .hero-img {
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .hero-img:hover img { transform: scale(1.04); }
+    .hero-img.large { grid-row: 1 / 3; }
+    .hero-badge {
+      position: absolute;
+      bottom: 1.5rem; left: 1.5rem;
+      background: rgba(253,250,245,0.95);
+      padding: 0.8rem 1.2rem;
+      border-left: 3px solid var(--caramel);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--brown);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--caramel);
+      overflow: hidden;
+      padding: 0.9rem 0;
+    }
+    .marquee {
+      display: flex; gap: 4rem;
+      animation: marquee 22s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee span {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      font-weight: 400;
+    }
+    .marquee-dot { color: rgba(255,255,255,0.45); font-size: 0.5rem; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ── SECTION COMMON ── */
+    .section-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--caramel);
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .section-tag::before {
+      content: '✦';
+      font-size: 0.6rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--dark-brown);
+    }
+    .section-title em { font-style: italic; color: var(--caramel); }
+
+    /* ── ABOUT STRIP ── */
+    .about-strip {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      min-height: 75vh;
+    }
+    .about-img-wrap { position: relative; overflow: hidden; }
+    .about-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .about-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(60,30,10,0.18), transparent);
+    }
+    .about-year {
+      position: absolute;
+      top: 3rem; left: 3rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.18);
+      line-height: 1;
+      font-style: italic;
+    }
+    .about-content {
+      background: var(--cream);
+      padding: 6rem 5rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .about-body {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-light);
+      line-height: 1.9;
+      margin-top: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .about-pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .pillar {
+      padding: 1.5rem;
+      background: var(--warm-white);
+      border-top: 2px solid var(--caramel);
+    }
+    .pillar-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+    .pillar-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--brown); margin-bottom: 0.4rem; }
+    .pillar-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.7; font-weight: 300; }
+
+    /* ── MENU / PRODUCTS ── */
+    .menu-section { padding: 7rem 5rem; background: var(--warm-white); }
+    .menu-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 3.5rem;
+    }
+    .menu-filters {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: transparent;
+      border: 1.5px solid var(--parchment);
+      color: var(--text-light);
+      padding: 0.5rem 1.3rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.25s;
+      text-transform: capitalize;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--caramel);
+      border-color: var(--caramel);
+      color: #fff;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 20px rgba(60,30,10,0.06);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: pointer;
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(60,30,10,0.12);
+    }
+    .product-img-wrap {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+    .product-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .product-card:hover .product-img-wrap img { transform: scale(1.06); }
+    .product-badge {
+      position: absolute; top: 0.8rem; left: 0.8rem;
+      background: var(--caramel);
+      color: #fff;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+    }
+    .product-badge.new { background: var(--sage); }
+    .product-badge.popular { background: var(--brown); }
+    .product-fav {
+      position: absolute; top: 0.8rem; right: 0.8rem;
+      background: rgba(255,255,255,0.9);
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s;
+    }
+    .product-fav:hover { transform: scale(1.15); }
+    .product-fav.liked { background: #fee; }
+    .product-info { padding: 1.2rem 1.3rem 1.4rem; }
+    .product-category {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--caramel);
+      margin-bottom: 0.4rem;
+    }
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--dark-brown);
+      margin-bottom: 0.4rem;
+    }
+    .product-desc {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      font-weight: 300;
+    }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; }
+    .product-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--brown);
+    }
+    .add-btn {
+      background: var(--cream);
+      border: none;
+      color: var(--caramel);
+      padding: 0.45rem 1rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+    .add-btn:hover { background: var(--caramel); color: #fff; }
+
+    /* ── SPECIALS BANNER ── */
+    .specials-banner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 55vh;
+      background: var(--dark-brown);
+      position: relative;
+      overflow: hidden;
+    }
+    .specials-img { position: relative; overflow: hidden; }
+    .specials-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+    .specials-content {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 5rem 5rem 6rem;
+      position: relative;
+    }
+    .specials-content .section-tag { color: var(--soft-gold); }
+    .specials-content .section-title { color: #fff; }
+    .specials-content p { color: rgba(255,255,255,0.65); font-size: 1rem; font-weight: 300; line-height: 1.8; margin-top: 1.2rem; margin-bottom: 2.5rem; }
+    .specials-list {
+      display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem;
+    }
+    .special-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 1.5rem;
+      background: rgba(255,255,255,0.06);
+      border-left: 3px solid var(--soft-gold);
+    }
+    .special-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: #fff; font-style: italic; }
+    .special-price { color: var(--soft-gold); font-size: 1rem; font-family: 'Playfair Display', serif; }
+    .btn-light {
+      background: var(--soft-gold);
+      color: var(--dark-brown);
+      padding: 0.95rem 2.2rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      display: inline-block;
+      transition: background 0.3s;
+      width: fit-content;
+    }
+    .btn-light:hover { background: #fff; }
+
+    /* ── PROCESS SECTION ── */
+    .process-section {
+      padding: 7rem 5rem;
+      background: var(--cream);
+      text-align: center;
+    }
+    .process-header { margin-bottom: 5rem; }
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3rem;
+      position: relative;
+    }
+    .process-grid::before {
+      content: '';
+      position: absolute;
+      top: 3.5rem; left: 12.5%; right: 12.5%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--parchment), var(--parchment), transparent);
+    }
+    .process-step { position: relative; }
+    .step-icon-wrap {
+      width: 70px; height: 70px;
+      background: var(--warm-white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 1.5rem;
+      border: 2px solid var(--parchment);
+      position: relative; z-index: 1;
+    }
+    .step-num {
+      position: absolute; top: -4px; right: -4px;
+      width: 22px; height: 22px;
+      background: var(--caramel);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.6rem;
+      font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--dark-brown); margin-bottom: 0.6rem; }
+    .step-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.75; font-weight: 300; }
+
+    /* ── SEASONAL COLLECTION ── */
+    .seasonal { padding: 7rem 5rem; }
+    .seasonal-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      height: 75vh;
+      margin-top: 4rem;
+    }
+    .seasonal-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .seasonal-card.featured { grid-row: 1 / 3; }
+    .seasonal-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .seasonal-card:hover img { transform: scale(1.06); }
+    .seasonal-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(40,20,5,0.75) 0%, transparent 55%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 2rem;
+    }
+    .seasonal-tag {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--soft-gold);
+      margin-bottom: 0.4rem;
+    }
+    .seasonal-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: #fff;
+      font-style: italic;
+      margin-bottom: 0.3rem;
+    }
+    .seasonal-card.featured .seasonal-name { font-size: 2rem; }
+    .seasonal-price { color: rgba(255,255,255,0.75); font-size: 0.9rem; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { padding: 7rem 5rem; background: var(--blush); }
+    .testimonials-header { text-align: center; margin-bottom: 4.5rem; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .testimonial-card {
+      background: var(--warm-white);
+      padding: 2.5rem;
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '"';
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      color: var(--parchment);
+      position: absolute;
+      top: 0.5rem; left: 1.5rem;
+      line-height: 1;
+    }
+    .testimonial-text {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-light);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+      padding-top: 1rem;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+    .author-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--parchment);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      overflow: hidden;
+    }
+    .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .author-name { font-weight: 500; font-size: 0.88rem; color: var(--dark-brown); }
+    .author-loc { font-size: 0.72rem; color: var(--text-light); }
+    .stars { color: var(--caramel); font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 0.8rem; }
+
+    /* ── GALLERY STRIP ── */
+    .gallery-strip {
+      display: flex;
+      height: 45vh;
+      overflow: hidden;
+    }
+    .gallery-strip > div {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-strip img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      filter: brightness(0.92);
+    }
+    .gallery-strip > div:hover img { transform: scale(1.05); filter: brightness(1); }
+
+    /* ── ORDER / CTA SECTION ── */
+    .order-section {
+      padding: 7rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      background: var(--warm-white);
+    }
+    .order-form { background: var(--cream); padding: 3.5rem; }
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--dark-brown);
+      margin-bottom: 2rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    .form-group label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--warm-white);
+      border: 1.5px solid var(--parchment);
+      padding: 0.85rem 1rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.25s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--caramel);
+    }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-submit {
+      background: var(--caramel);
+      color: #fff;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      width: 100%;
+      transition: background 0.3s;
+      margin-top: 0.5rem;
+    }
+    .form-submit:hover { background: var(--brown); }
+
+    .order-info { }
+    .info-item {
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid var(--parchment);
+    }
+    .info-item:first-child { border-top: 1px solid var(--parchment); }
+    .info-icon {
+      width: 48px; height: 48px;
+      background: var(--cream);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .info-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--dark-brown); margin-bottom: 0.3rem; }
+    .info-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.7; font-weight: 300; }
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      background: var(--brown);
+      padding: 5rem;
+      text-align: center;
+    }
+    .newsletter h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+      font-style: italic;
+    }
+    .newsletter p { color: rgba(255,255,255,0.65); margin-bottom: 2.5rem; font-size: 1rem; }
+    .newsletter-form {
+      display: flex; gap: 0; max-width: 480px; margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .newsletter-form input {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.95);
+      color: var(--text);
+    }
+    .newsletter-form button {
+      background: var(--caramel);
+      color: #fff;
+      border: none;
+      padding: 1rem 2rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .newsletter-form button:hover { background: var(--dark-brown); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark-brown);
+      padding: 5rem 5rem 2.5rem;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 4rem;
+    }
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-style: italic;
+      color: var(--soft-gold);
+      margin-bottom: 1rem;
+    }
+    .footer-brand span { color: rgba(255,255,255,0.4); }
+    .footer-tagline { font-size: 0.85rem; color: rgba(255,255,255,0.45); line-height: 1.7; font-weight: 300; margin-bottom: 1.5rem; }
+    .footer-social { display: flex; gap: 0.8rem; }
+    .social-btn {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.25s;
+      text-decoration: none;
+    }
+    .social-btn:hover { background: var(--caramel); }
+    .footer-col h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.7rem; }
+    .footer-col ul li a {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .footer-col ul li a:hover { color: var(--soft-gold); }
+    .footer-hours { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.9; }
+    .footer-hours strong { color: rgba(255,255,255,0.75); font-weight: 500; display: block; margin-bottom: 0.3rem; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.3); letter-spacing: 0.05em; }
+
+    /* ── CART TOAST ── */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--dark-brown);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      border-left: 4px solid var(--caramel);
+      font-size: 0.88rem;
+      z-index: 2000;
+      transform: translateX(120%);
+      transition: transform 0.4s ease;
+      border-radius: 2px;
+      max-width: 280px;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast strong { display: block; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--soft-gold); margin-bottom: 0.2rem; }
+
+    /* ── CART COUNT ── */
+    .cart-wrap { position: relative; display: inline-block; }
+    .cart-count {
+      position: absolute; top: -6px; right: -8px;
+      background: var(--caramel);
+      color: #fff;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      font-size: 0.6rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-left > * {
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+    }
+    .hero-left > *:nth-child(1) { animation-delay: 0.1s; }
+    .hero-left > *:nth-child(2) { animation-delay: 0.25s; }
+    .hero-left > *:nth-child(3) { animation-delay: 0.4s; }
+    .hero-left > *:nth-child(4) { animation-delay: 0.55s; }
+    .hero-left > *:nth-child(5) { animation-delay: 0.7s; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 1024px) {
+      nav { padding: 1rem 2rem; }
+      .nav-links { gap: 1.5rem; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 7rem 2.5rem 4rem; }
+      .about-strip, .specials-banner, .order-section { grid-template-columns: 1fr; }
+      .about-img-wrap { height: 50vh; }
+      .about-content { padding: 4rem 2.5rem; }
+      .specials-img { height: 40vh; }
+      .menu-section, .process-section, .seasonal, .testimonials, .order-section, .newsletter, footer { padding: 4rem 2rem; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-grid, .footer-top, .testimonials-grid { grid-template-columns: 1fr 1fr; }
+      .seasonal-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; height: auto; }
+      .seasonal-card { height: 250px; }
+      .seasonal-card.featured { grid-column: 1 / 3; height: 320px; grid-row: auto; }
+      .menu-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      .products-grid { grid-template-columns: 1fr; }
+      .process-grid, .footer-top, .testimonials-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+      .newsletter-form { flex-direction: column; }
+      .form-row { grid-template-columns: 1fr; }
+      .about-pillars { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><strong>Added to cart</strong><span id="toastMsg">Item added!</span></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">La <span>Miette</span></div>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#seasonal">Seasonal</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#order">Order</a></li>
+    <li>
+      <div class="cart-wrap">
+        <a href="#order" class="nav-order">🛒 Cart <span class="cart-count" id="cartCount">0</span></a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Artisan Bakery · Est. 2009</div>
+    <h1 class="hero-title">
+      Baked with<br>
+      <em>love,</em> served<br>
+      with joy.
+    </h1>
+    <p class="hero-desc">
+      Every loaf, every pastry, every bite — crafted from the finest 
+      ingredients, by hands that care. Welcome to La Miette.
+    </p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary">Explore Menu</a>
+      <a href="#order" class="btn-secondary">Order Now</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">48+</div>
+        <div class="stat-label">Baked Goods Daily</div>
+      </div>
+      <div>
+        <div class="stat-num">15</div>
+        <div class="stat-label">Years of Craft</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Natural Ingredients</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img large">
+      <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=85" alt="Fresh Artisan Bread"/>
+      <div class="hero-badge">Freshly Baked Daily</div>
+    </div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=80" alt="Croissants"/>
+    </div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=80" alt="Pastries"/>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>Sourdough</span><span class="marquee-dot">◆</span>
+    <span>Croissants</span><span class="marquee-dot">◆</span>
+    <span>Cinnamon Rolls</span><span class="marquee-dot">◆</span>
+    <span>Macarons</span><span class="marquee-dot">◆</span>
+    <span>Focaccia</span><span class="marquee-dot">◆</span>
+    <span>Tarts</span><span class="marquee-dot">◆</span>
+    <span>Éclairs</span><span class="marquee-dot">◆</span>
+    <span>Brioche</span><span class="marquee-dot">◆</span>
+    <span>Cookies</span><span class="marquee-dot">◆</span>
+    <span>Cheesecakes</span><span class="marquee-dot">◆</span>
+    <span>Baguettes</span><span class="marquee-dot">◆</span>
+    <span>Muffins</span><span class="marquee-dot">◆</span>
+    <!-- repeat -->
+    <span>Sourdough</span><span class="marquee-dot">◆</span>
+    <span>Croissants</span><span class="marquee-dot">◆</span>
+    <span>Cinnamon Rolls</span><span class="marquee-dot">◆</span>
+    <span>Macarons</span><span class="marquee-dot">◆</span>
+    <span>Focaccia</span><span class="marquee-dot">◆</span>
+    <span>Tarts</span><span class="marquee-dot">◆</span>
+    <span>Éclairs</span><span class="marquee-dot">◆</span>
+    <span>Brioche</span><span class="marquee-dot">◆</span>
+    <span>Cookies</span><span class="marquee-dot">◆</span>
+    <span>Cheesecakes</span><span class="marquee-dot">◆</span>
+    <span>Baguettes</span><span class="marquee-dot">◆</span>
+    <span>Muffins</span><span class="marquee-dot">◆</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-strip" id="about">
+  <div class="about-img-wrap">
+    <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=900&q=85" alt="Baker at work"/>
+    <div class="about-overlay"></div>
+    <div class="about-year">2009</div>
+  </div>
+  <div class="about-content">
+    <div class="section-tag reveal">Our Story</div>
+    <h2 class="section-title reveal">Baking is our <em>passion,</em><br>not just our craft.</h2>
+    <p class="about-body reveal">
+      La Miette began in a small kitchen in 2009, born from a simple belief: 
+      that good bread changes a morning, and a great pastry can make a whole day. 
+      We source the finest local flour, seasonal fruits, and free-range eggs 
+      to create goods that nourish both body and soul.
+    </p>
+    <div class="about-pillars">
+      <div class="pillar reveal">
+        <div class="pillar-icon">🌾</div>
+        <div class="pillar-title">Local Sourcing</div>
+        <p class="pillar-desc">Flour, dairy, and fruits from farms within 50 miles.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="pillar-icon">⏰</div>
+        <div class="pillar-title">Slow Fermentation</div>
+        <p class="pillar-desc">48-hour proofing for flavour that can't be rushed.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="pillar-icon">🚫</div>
+        <div class="pillar-title">No Preservatives</div>
+        <p class="pillar-desc">Real ingredients only. No shortcuts, ever.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="pillar-icon">🌱</div>
+        <div class="pillar-title">Sustainable</div>
+        <p class="pillar-desc">Compostable packaging and zero food-waste policy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU / PRODUCTS -->
+<section class="menu-section" id="menu">
+  <div class="menu-header">
+    <div>
+      <div class="section-tag reveal">Our Menu</div>
+      <h2 class="section-title reveal">Made fresh, <em>every morning</em></h2>
+    </div>
+    <div class="menu-filters" id="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="breads">Breads</button>
+      <button class="filter-btn" data-filter="pastries">Pastries</button>
+      <button class="filter-btn" data-filter="cakes">Cakes</button>
+      <button class="filter-btn" data-filter="cookies">Cookies</button>
+      <button class="filter-btn" data-filter="vegan">Vegan</button>
+    </div>
+  </div>
+
+  <div class="products-grid" id="productsGrid">
+    <!-- JS renders products here -->
+  </div>
+</section>
+
+<!-- SPECIALS -->
+<section class="specials-banner">
+  <div class="specials-img">
+    <img src="https://images.unsplash.com/photo-1519915028121-7d3463d5b1ff?w=800&q=80" alt="Seasonal Special"/>
+  </div>
+  <div class="specials-content">
+    <div class="section-tag">Today's Specials</div>
+    <h2 class="section-title">Baked this<br><em>morning</em></h2>
+    <p>Our baker's favourites — limited quantities, available until sold out.</p>
+    <div class="specials-list">
+      <div class="special-item">
+        <span class="special-name">Almond Croissant</span>
+        <span class="special-price">₹180</span>
+      </div>
+      <div class="special-item">
+        <span class="special-name">Cardamom Bun</span>
+        <span class="special-price">₹150</span>
+      </div>
+      <div class="special-item">
+        <span class="special-name">Fig & Walnut Loaf</span>
+        <span class="special-price">₹320</span>
+      </div>
+      <div class="special-item">
+        <span class="special-name">Dark Chocolate Tart</span>
+        <span class="special-price">₹260</span>
+      </div>
+    </div>
+    <a href="#order" class="btn-light">Order Today's Specials</a>
+  </div>
+</section>
+
+<!-- HOW WE BAKE -->
+<section class="process-section">
+  <div class="process-header">
+    <div class="section-tag" style="justify-content:center">Our Process</div>
+    <h2 class="section-title reveal">From grain to your<br><em>table</em></h2>
+  </div>
+  <div class="process-grid">
+    <div class="process-step reveal">
+      <div class="step-icon-wrap">🌾<span class="step-num">1</span></div>
+      <h3 class="step-title">Source</h3>
+      <p class="step-desc">We select heritage grain flour and organic produce from trusted local farms each week.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-icon-wrap">🧪<span class="step-num">2</span></div>
+      <h3 class="step-title">Ferment</h3>
+      <p class="step-desc">Our sourdough starter — 15 years old — slowly ferments doughs for depth of flavour.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-icon-wrap">👐<span class="step-num">3</span></div>
+      <h3 class="step-title">Shape</h3>
+      <p class="step-desc">Every loaf and pastry is hand-shaped with care. No machines, no shortcuts.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-icon-wrap">🔥<span class="step-num">4</span></div>
+      <h3 class="step-title">Bake</h3>
+      <p class="step-desc">Stone-deck ovens at precise temperatures create the perfect crust and crumb every time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEASONAL -->
+<section class="seasonal" id="seasonal">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+    <div>
+      <div class="section-tag reveal">Seasonal Collection</div>
+      <h2 class="section-title reveal">Spring <em>favourites</em></h2>
+    </div>
+    <a href="#menu" class="btn-secondary" style="flex-shrink:0">View All</a>
+  </div>
+  <div class="seasonal-grid">
+    <div class="seasonal-card featured">
+      <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=900&q=85" alt="Strawberry Tart"/>
+      <div class="seasonal-overlay">
+        <span class="seasonal-tag">Featured · Spring</span>
+        <div class="seasonal-name">Strawberry & Rose Tart</div>
+        <div class="seasonal-price">₹340</div>
+      </div>
+    </div>
+    <div class="seasonal-card">
+      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80" alt="Cake"/>
+      <div class="seasonal-overlay">
+        <span class="seasonal-tag">Seasonal</span>
+        <div class="seasonal-name">Lemon Drizzle Cake</div>
+        <div class="seasonal-price">₹420</div>
+      </div>
+    </div>
+    <div class="seasonal-card">
+      <img src="https://images.unsplash.com/photo-1587241321921-91a834d6d191?w=600&q=80" alt="Cinnamon Roll"/>
+      <div class="seasonal-overlay">
+        <span class="seasonal-tag">New</span>
+        <div class="seasonal-name">Pistachio Roll</div>
+        <div class="seasonal-price">₹195</div>
+      </div>
+    </div>
+    <div class="seasonal-card">
+      <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=600&q=80" alt="Macarons"/>
+      <div class="seasonal-overlay">
+        <span class="seasonal-tag">Spring</span>
+        <div class="seasonal-name">Garden Macarons</div>
+        <div class="seasonal-price">₹280</div>
+      </div>
+    </div>
+    <div class="seasonal-card">
+      <img src="https://images.unsplash.com/photo-1488477304112-4944851de03d?w=600&q=80" alt="Mango pastry"/>
+      <div class="seasonal-overlay">
+        <span class="seasonal-tag">Limited</span>
+        <div class="seasonal-name">Mango Cream Puff</div>
+        <div class="seasonal-price">₹220</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-header">
+    <div class="section-tag" style="justify-content:center">Reviews</div>
+    <h2 class="section-title reveal">What our <em>guests</em> say</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">The sourdough loaf is the best I've ever had — crispy crust, open crumb, and that slight tang that only comes from a well-maintained starter. I visit every Saturday morning.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80" alt="Priya S."/></div>
+        <div><div class="author-name">Priya Sharma</div><div class="author-loc">Regular Customer</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">Ordered a custom birthday cake and it was absolutely stunning — not just beautiful but genuinely delicious. La Miette is my only choice for celebrations now.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80" alt="Arjun"/></div>
+        <div><div class="author-name">Arjun Mehta</div><div class="author-loc">Birthday Customer</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">I've been to bakeries across Europe and La Miette holds its own beautifully. The croissants — laminated perfectly, buttery and light — rival anything I've had in Paris.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80" alt="Meera"/></div>
+        <div><div class="author-name">Meera Kapoor</div><div class="author-loc">Food Blogger</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY STRIP -->
+<div class="gallery-strip">
+  <div><img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=400&q=80" alt="gallery"/></div>
+  <div><img src="https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=400&q=80" alt="gallery"/></div>
+  <div><img src="https://images.unsplash.com/photo-1600718374662-0483d2b9da44?w=400&q=80" alt="gallery"/></div>
+  <div><img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&q=80" alt="gallery"/></div>
+  <div><img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=400&q=80" alt="gallery"/></div>
+</div>
+
+<!-- ORDER SECTION -->
+<section class="order-section" id="order">
+  <div>
+    <div class="section-tag reveal">Custom Orders</div>
+    <h2 class="section-title reveal">Order something <em>special</em></h2>
+    <p style="margin-top:1rem;color:var(--text-light);font-weight:300;line-height:1.8;margin-bottom:3rem;" class="reveal">
+      Planning a wedding, birthday, or corporate event? We create custom cakes, 
+      cupcake towers, pastry platters, and bespoke breads to order.
+    </p>
+    <div class="order-info">
+      <div class="info-item reveal">
+        <div class="info-icon">🕐</div>
+        <div>
+          <div class="info-title">Opening Hours</div>
+          <div class="info-desc">Tuesday – Saturday: 7 AM – 7 PM<br>Sunday: 8 AM – 2 PM<br>Closed Mondays</div>
+        </div>
+      </div>
+      <div class="info-item reveal">
+        <div class="info-icon">🚚</div>
+        <div>
+          <div class="info-title">Delivery Available</div>
+          <div class="info-desc">Free delivery on orders over ₹800 within 10 km. Same-day delivery for orders placed before 10 AM.</div>
+        </div>
+      </div>
+      <div class="info-item reveal">
+        <div class="info-icon">🎂</div>
+        <div>
+          <div class="info-title">Custom Orders</div>
+          <div class="info-desc">Please order at least 48 hours in advance for custom cakes and special occasions.</div>
+        </div>
+      </div>
+      <div class="info-item reveal">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-title">Find Us</div>
+          <div class="info-desc">12 Flour Lane, Baker's Market, New Delhi – 110001<br>+91 98765 43210</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="order-form reveal">
+    <div class="form-title">Place an Order</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" placeholder="Priya"/>
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" placeholder="Sharma"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="tel" placeholder="+91 98765 43210"/>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" placeholder="priya@email.com"/>
+    </div>
+    <div class="form-group">
+      <label>Product Category</label>
+      <select>
+        <option>Select a category…</option>
+        <option>Breads & Loaves</option>
+        <option>Pastries & Croissants</option>
+        <option>Custom Cakes</option>
+        <option>Cookies & Biscuits</option>
+        <option>Tarts & Éclairs</option>
+        <option>Cupcakes</option>
+        <option>Corporate / Bulk Order</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Pickup / Delivery Date</label>
+        <input type="date"/>
+      </div>
+      <div class="form-group">
+        <label>Preferred Time</label>
+        <input type="time"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Special Instructions</label>
+      <textarea placeholder="Dietary requirements, occasion, flavour preferences…"></textarea>
+    </div>
+    <button class="form-submit" onclick="submitForm(this)">Send Order Request →</button>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <h2>Stay in the know</h2>
+  <p>Weekly specials, seasonal menus, and bakery stories — right to your inbox.</p>
+  <div class="newsletter-form">
+    <input type="email" placeholder="your@email.com"/>
+    <button onclick="this.textContent='Subscribed ✓'">Subscribe</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">La <span>Miette</span></div>
+      <p class="footer-tagline">Handcrafted with love in our little kitchen since 2009. Every crumb matters.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn">📷</a>
+        <a href="#" class="social-btn">📘</a>
+        <a href="#" class="social-btn">🐦</a>
+        <a href="#" class="social-btn">▶️</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Menu</h4>
+      <ul>
+        <li><a href="#">Sourdough Breads</a></li>
+        <li><a href="#">Croissants & Pastries</a></li>
+        <li><a href="#">Cakes & Tarts</a></li>
+        <li><a href="#">Cookies & Biscuits</a></li>
+        <li><a href="#">Vegan Selection</a></li>
+        <li><a href="#">Seasonal Specials</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Visit</h4>
+      <div class="footer-hours">
+        <strong>Address</strong>12 Flour Lane, Baker's Market<br>New Delhi – 110001
+        <strong style="margin-top:1rem">Hours</strong>
+        Tue–Sat: 7AM – 7PM<br>
+        Sunday: 8AM – 2PM<br>
+        Monday: Closed
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <ul>
+        <li><a href="#">Custom Orders</a></li>
+        <li><a href="#">Delivery Info</a></li>
+        <li><a href="#">Allergen Info</a></li>
+        <li><a href="#">Gift Cards</a></li>
+        <li><a href="#">Wholesale</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 La Miette Artisan Bakery. All rights reserved.</div>
+    <div class="footer-copy">Made with 🧡 and flour</div>
+  </div>
+</footer>
+
+<script>
+  // Products Data
+  const products = [
+    { id:1, name:'Classic Sourdough', category:'breads', badge:'popular', badgeType:'popular', img:'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=500&q=80', desc:'48-hour fermented sourdough with a crisp crust and open crumb.', price:'₹280' },
+    { id:2, name:'Butter Croissant', category:'pastries', badge:'bestseller', badgeType:'', img:'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=80', desc:'Perfectly laminated with French butter, golden and flaky.', price:'₹120' },
+    { id:3, name:'Blueberry Muffin', category:'cakes', badge:'new', badgeType:'new', img:'https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=500&q=80', desc:'Bursting with wild blueberries and a crunchy sugar top.', price:'₹110' },
+    { id:4, name:'Almond Biscotti', category:'cookies', badge:'', badgeType:'', img:'https://images.unsplash.com/photo-1548365328-8c6db3220e4c?w=500&q=80', desc:'Twice-baked Italian-style biscotti with toasted almonds.', price:'₹95' },
+    { id:5, name:'Focaccia Rosemary', category:'breads', badge:'', badgeType:'', img:'https://images.unsplash.com/photo-1571748982800-fa51082c2224?w=500&q=80', desc:'Olive oil-rich, dimpled focaccia with sea salt and rosemary.', price:'₹220' },
+    { id:6, name:'Pain au Chocolat', category:'pastries', badge:'popular', badgeType:'popular', img:'https://images.unsplash.com/photo-1623334044303-241021148842?w=500&q=80', desc:'Flaky pastry wrapped around premium dark chocolate batons.', price:'₹150' },
+    { id:7, name:'Lemon Tart', category:'cakes', badge:'new', badgeType:'new', img:'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=500&q=80', desc:'Sharp lemon curd in a buttery shortcrust shell. Petit and perfect.', price:'₹230' },
+    { id:8, name:'Chocolate Chip Cookie', category:'cookies', badge:'', badgeType:'', img:'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&q=80', desc:'Brown butter, sea salt, double chocolate. Bakery-style thick cookies.', price:'₹80' },
+    { id:9, name:'Banana Bread', category:'breads', badge:'', badgeType:'', img:'https://images.unsplash.com/photo-1574085733277-851d9d856a3a?w=500&q=80', desc:'Moist, dense banana loaf with walnuts and a hint of cinnamon.', price:'₹260' },
+    { id:10, name:'Éclair', category:'pastries', badge:'new', badgeType:'new', img:'https://images.unsplash.com/photo-1612240498936-65f5101365d2?w=500&q=80', desc:'Choux pastry filled with vanilla cream, topped with chocolate glaze.', price:'₹175' },
+    { id:11, name:'Red Velvet Cupcake', category:'cakes', badge:'popular', badgeType:'popular', img:'https://images.unsplash.com/photo-1599785209707-a456fc1337bb?w=500&q=80', desc:'Velvety red cake with cream cheese frosting and crumble topping.', price:'₹130' },
+    { id:12, name:'Vegan Brownie', category:'vegan', badge:'vegan', badgeType:'new', img:'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80', desc:'Rich, fudgy brownies made entirely with plant-based ingredients.', price:'₹140' },
+    { id:13, name:'Multigrain Loaf', category:'breads', badge:'', badgeType:'', img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&q=80', desc:'Seeded multigrain loaf — nutty, wholesome, perfect for sandwiches.', price:'₹310' },
+    { id:14, name:'Macaron Box (6)', category:'pastries', badge:'', badgeType:'', img:'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=500&q=80', desc:'Six handcrafted French macarons in seasonal flavours.', price:'₹390' },
+    { id:15, name:'Vegan Banana Muffin', category:'vegan', badge:'vegan', badgeType:'new', img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80', desc:'Egg-free, dairy-free banana muffin — naturally sweetened.', price:'₹105' },
+    { id:16, name:'Cinnamon Roll', category:'pastries', badge:'popular', badgeType:'popular', img:'https://images.unsplash.com/photo-1587241321921-91a834d6d191?w=500&q=80', desc:'Pillowy soft rolls glazed with cream cheese frosting. Warm & gooey.', price:'₹160' },
+  ];
+
+  let activeFilter = 'all';
+  let cart = 0;
+
+  function renderProducts(filter) {
+    const grid = document.getElementById('productsGrid');
+    const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+    grid.innerHTML = filtered.map(p => `
+      <div class="product-card reveal" data-id="${p.id}">
+        <div class="product-img-wrap">
+          <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+          ${p.badge ? `<span class="product-badge ${p.badgeType}">${p.badge}</span>` : ''}
+          <button class="product-fav" onclick="toggleFav(this)" title="Favourite">🤍</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">${p.category}</div>
+          <div class="product-name">${p.name}</div>
+          <p class="product-desc">${p.desc}</p>
+          <div class="product-footer">
+            <div class="product-price">${p.price}</div>
+            <button class="add-btn" onclick="addToCart('${p.name}', this)">+ Add</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    // trigger reveal
+    setTimeout(() => {
+      grid.querySelectorAll('.reveal').forEach(el => {
+        el.classList.add('visible');
+      });
+    }, 50);
+  }
+
+  function toggleFav(btn) {
+    if (btn.classList.contains('liked')) {
+      btn.classList.remove('liked');
+      btn.textContent = '🤍';
+    } else {
+      btn.classList.add('liked');
+      btn.textContent = '❤️';
+    }
+  }
+
+  function addToCart(name, btn) {
+    cart++;
+    document.getElementById('cartCount').textContent = cart;
+    document.getElementById('toastMsg').textContent = name + ' added!';
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    btn.textContent = '✓ Added';
+    btn.style.background = 'var(--sage)';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      toast.classList.remove('show');
+      btn.textContent = '+ Add';
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 2500);
+  }
+
+  function submitForm(btn) {
+    btn.textContent = '✓ Order Received! We\'ll call you soon.';
+    btn.style.background = 'var(--sage)';
+    setTimeout(() => {
+      btn.textContent = 'Send Order Request →';
+      btn.style.background = '';
+    }, 4000);
+  }
+
+  // Filters
+  document.getElementById('filters').addEventListener('click', e => {
+    if (e.target.classList.contains('filter-btn')) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      activeFilter = e.target.dataset.filter;
+      renderProducts(activeFilter);
+    }
+  });
+
+  // Initial render
+  renderProducts('all');
+
+  // Scroll nav
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Observe new elements after filter change
+  const mutObs = new MutationObserver(() => {
+    document.querySelectorAll('.reveal:not([class*="visible"])').forEach(el => observer.observe(el));
+  });
+  mutObs.observe(document.getElementById('productsGrid'), { childList: true });
+</script>
+</body>
+</html>
